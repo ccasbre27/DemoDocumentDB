@@ -65,18 +65,26 @@ namespace DemoDocumentDB
         private async static void listarDocumentos()
         {
 
-           
+            var documentos = await cliente.ReadDocumentFeedAsync(UriFactory.CreateDocumentCollectionUri(DATABASE_NAME, COLLECTION_NAME), new FeedOptions { MaxItemCount = 10 });
+            foreach (var documento in documentos)
+            {
+                Console.WriteLine(documento);
+            }
+            
+        }
+
+        private static void consultarDocumentos()
+        {
             // Ejecutamos la consulta SQL
             IQueryable<Persona> familyQueryInSql = cliente.CreateDocumentQuery<Persona>(
                 UriFactory.CreateDocumentCollectionUri(DATABASE_NAME, COLLECTION_NAME),
                 "SELECT * FROM Persona ");
-            
+
             Console.WriteLine("Running direct SQL query...");
             foreach (Persona persona in familyQueryInSql)
             {
                 Console.WriteLine("\tRead {0}", persona.Nombre);
             }
-
         }
 
         
